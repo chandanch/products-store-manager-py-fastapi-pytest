@@ -10,6 +10,7 @@ uvicorn = "*"
 python-dotenv = "*"
 sqlalchemy = "*"
 psycopg-binary = "*"
+alembic = "*"
 
 [dev-packages]
 

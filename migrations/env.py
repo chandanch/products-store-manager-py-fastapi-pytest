@@ -18,12 +18,16 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+# override the value of sqlalchemy URL defined in named configuration
 config.set_section_option("devdb", "sqlalchemy.url", os.environ.get("DB_URL"))
 
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+
+# specify the path of Base class metadata - This enables
+# alembic to look for models metadata within the specified path
 target_metadata = models.Base.metadata
 
 # other values from the config, defined by the needs of env.py,

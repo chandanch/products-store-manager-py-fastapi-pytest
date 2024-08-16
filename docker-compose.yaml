@@ -10,5 +10,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: prodstore123
       POSTGRES_DB: productstore
+    volumes:
+      - "./scripts:/docker-entrypoint-initdb.d"
 
 name: productstore-manager

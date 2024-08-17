@@ -12,6 +12,7 @@ sqlalchemy = "*"
 alembic = "*"
 psycopg2-binary = "*"
 pytest-alembic = "*"
+docker = "*"
 
 [dev-packages]
 

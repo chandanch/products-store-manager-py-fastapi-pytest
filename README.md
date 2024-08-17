@@ -2,6 +2,12 @@
 
 A Simple Store manager app for managing products, built with Python & FastAPI
 
+## Application Setup & Run
+
+1. Install dependencies: `pipenv install`
+2. Activate virtual env: `pipenv shell`
+3. Start the service: `./run_startup.sh`
+
 ## Alembic Commands
 
 ### Intialize Alembic Version

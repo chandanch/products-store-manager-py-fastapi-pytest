@@ -1,4 +1,5 @@
 import docker
+import os
 from docker.errors import NotFound
 import time
 
@@ -20,6 +21,8 @@ def is_container_running(container) -> bool:
 def create_database_container():
     client = docker.from_env()
     CONTAINER_NAME = "test-db"
+    scripts_dir_path = os.path.abspath("./scripts")
+
     is_container_exists, existing_container = check_container_exists(
         client, CONTAINER_NAME
     )
@@ -41,6 +44,7 @@ def create_database_container():
             "POSTGRES_PASSWORD": "prodtesterstore123",
             "POSTGRES_DB": "productstore",
         },
+        "volumes": [f"{scripts_dir_path}:/docker-entrypoint-initdb.d"],
     }
     container = client.containers.run(**container_config)
 

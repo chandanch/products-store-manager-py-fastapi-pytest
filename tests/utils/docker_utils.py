@@ -50,16 +50,12 @@ def create_database_container():
 
     print("Checking container health..")
 
-    elapse_count = 0
-    while not is_container_running(container):
-        elapse_count += 1
-        if elapse_count == 10:
-            raise RuntimeError("Container did not start in expected time")
-        time.sleep(1)
+    # wait till the container is fully up
+    time.sleep(1)
 
     is_container_started = is_container_running(container)
 
     if is_container_started:
         return container
     else:
-        raise RuntimeError("Container did not start, check for errors")
+        raise RuntimeError("Container did not start, check for error in container logs")

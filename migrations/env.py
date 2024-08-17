@@ -20,6 +20,8 @@ if config.config_file_name is not None:
 
 # override the value of sqlalchemy URL defined in named configuration
 config.set_section_option("devdb", "sqlalchemy.url", os.environ.get("DB_URL"))
+config.set_section_option("testdb", "sqlalchemy.url", os.environ.get("DB_URL_TEST"))
+
 
 # add your model's MetaData object here
 # for 'autogenerate' support

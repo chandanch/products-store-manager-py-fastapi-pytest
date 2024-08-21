@@ -38,4 +38,4 @@ The command is used to apply all pending database migrations up to the latest ve
 
 `alembic -n <config_name> upgrade head`
 
-The command is used to apply all pending database migrations up to the latest version in the context of a specific named configuration
+The command is used to apply all pending database migrations up to the latest version in the context of a specific named configuration.

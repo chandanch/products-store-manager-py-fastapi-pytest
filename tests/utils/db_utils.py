@@ -9,6 +9,6 @@ def upgrade_db(connection=None, revision="head"):
     if connection is not None:
         # specify the configuration to used by alembic
         config.config_ini_section = "testdb"
-        # upgrade db using 'command'
+        # upgrade db using 'command' module
         print(f"Migrating Test DB to revision {revision}")
         command.upgrade(config=config, revision=revision)

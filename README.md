@@ -39,3 +39,21 @@ The command is used to apply all pending database migrations up to the latest ve
 `alembic -n <config_name> upgrade head`
 
 The command is used to apply all pending database migrations up to the latest version in the context of a specific named configuration.
+
+## Database Structural Testing
+
+The database structurual testing verifies the integrity and correctness of the database schemas and its associated structures such as tables columns contraints, foriegn keys etc. in a database.
+
+### Table & Column Validation
+
+- Confirm the presence of all required tables within the database schema.
+
+- Validate the existence of expected columns in each table, ensuring correct data types.
+
+- Verify nullable or not nullable fields
+
+- Test columns with specific constraints to ensure they are accurately defined.
+
+- Verify the correctness of default values for relevant columns.
+
+- Ensure that column lengths align with defined requirements.

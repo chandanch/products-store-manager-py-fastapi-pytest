@@ -57,3 +57,11 @@ The database structurual testing verifies the integrity and correctness of the d
 - Verify the correctness of default values for relevant columns.
 
 - Ensure that column lengths align with defined requirements.
+
+### Schema Testing
+
+_To be added_
+
+### Index Testing
+
+_To be added_

@@ -41,3 +41,11 @@ def test_model_structure_category_nullable_constraints(db_inspector):
         assert column["nullable"] == expected_nullable_columns.get(
             column["name"]
         ), f"Column '{column['name']}' cannot be null"
+
+
+def test_model_structure_category_column_constraints(db_inspector):
+    constraints = db_inspector.get_check_constraints(TABLE_NAME)
+
+    assert any(
+        constraint["name"] == "name_length_constraint" for constraint in constraints
+    )

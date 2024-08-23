@@ -1,1 +1,1 @@
-from fixture import inspect_database  # noqa: F401
+from fixture import db_inspector  # noqa: F401

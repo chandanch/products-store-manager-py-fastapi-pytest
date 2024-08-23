@@ -8,3 +8,10 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+
+
+class Category(Base):
+    __tablename__ = "category"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)

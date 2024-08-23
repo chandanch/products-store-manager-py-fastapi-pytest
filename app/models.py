@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, CheckConstraint
 
 from app.settings.db_connection import Base
 
@@ -19,3 +19,8 @@ class Category(Base):
     is_active = Column(Boolean, nullable=False)
     level = Column(Integer, nullable=False)
     parent_id = Column(Integer, nullable=True)
+
+    __tableargs__ = (
+        CheckConstraint("LENGTH(name) > 0", name="name_length_constraint"),
+        CheckConstraint("LENGTH(slug) > 0", name="slugh_length_constraint"),
+    )

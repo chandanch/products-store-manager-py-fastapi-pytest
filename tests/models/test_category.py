@@ -55,6 +55,15 @@ def test_model_structure_category_default_values(db_inspector):
     columns = {
         columns["name"]: columns for columns in db_inspector.get_columns(TABLE_NAME)
     }
-    print(columns)
+    # print(columns)
     assert columns["is_active"]["default"] == "false"
     assert columns["level"]["default"] == "100"
+
+
+def test_model_structure_category_column_lengths(db_inspector):
+    columns = {
+        columns["name"]: columns for columns in db_inspector.get_columns(TABLE_NAME)
+    }
+    print(columns)
+    assert columns["name"]["type"].length == 100
+    assert columns["slug"]["type"].length == 120

@@ -65,3 +65,14 @@ _To be added_
 ### Index Testing
 
 _To be added_
+
+### Pytest Markers
+
+pytest markers allow us to categorize the test or group the tests into different areas of testing.
+For instance, we add a marker to all of the structural tests and run only the structural tests by specifying the marker.
+
+**Run the tests with specific marker**
+`pytest -m <marker>`
+
+**Run the tests with multiple markers marker**
+`pytest -m <marker1> and <marker2>`

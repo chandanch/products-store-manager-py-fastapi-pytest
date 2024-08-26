@@ -64,6 +64,20 @@ def test_model_structure_category_column_lengths(db_inspector):
     columns = {
         columns["name"]: columns for columns in db_inspector.get_columns(TABLE_NAME)
     }
-    print(columns)
+    # print(columns)
     assert columns["name"]["type"].length == 100
-    assert columns["slug"]["type"].length == 120
+    assert columns["slug"]["type"].length == 140
+
+
+def test_model_strcuture_category_unique_constraints(db_inspector):
+    constraints = db_inspector.get_unique_constraints(TABLE_NAME)
+    print("Test Constraints...", constraints)
+
+    assert any(
+        constraint["name"] == "unq_category_name_level_constraint"
+        for constraint in constraints
+    )
+    assert any(
+        constraint["name"] == "unq_category_slug_constraint"
+        for constraint in constraints
+    )

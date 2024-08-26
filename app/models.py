@@ -1,4 +1,11 @@
-from sqlalchemy import Column, Integer, String, Boolean, CheckConstraint
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Boolean,
+    CheckConstraint,
+    UniqueConstraint,
+)
 
 from app.settings.db_connection import Base
 
@@ -23,4 +30,6 @@ class Category(Base):
     __tableargs__ = (
         CheckConstraint("LENGTH(name) > 0", name="name_length_constraint"),
         CheckConstraint("LENGTH(slug) > 0", name="slugh_length_constraint"),
+        UniqueConstraint("name", "level", name="unq_category_name_level_constraint"),
+        UniqueConstraint("slug", name="unq_category_slug_constraint"),
     )

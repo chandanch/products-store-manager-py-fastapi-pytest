@@ -71,7 +71,7 @@ def test_model_structure_category_column_lengths(db_inspector):
 
 def test_model_strcuture_category_unique_constraints(db_inspector):
     constraints = db_inspector.get_unique_constraints(TABLE_NAME)
-    print("Test Constraints...", constraints)
+    # print("Test Constraints...", constraints)
 
     assert any(
         constraint["name"] == "unq_category_name_level_constraint"

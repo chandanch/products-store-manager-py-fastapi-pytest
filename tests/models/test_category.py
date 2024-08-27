@@ -1,4 +1,5 @@
 from sqlalchemy import Integer, String, Boolean
+import pytest
 
 
 TABLE_NAME = "category"
@@ -69,6 +70,7 @@ def test_model_structure_category_column_lengths(db_inspector):
     assert columns["slug"]["type"].length == 140
 
 
+@pytest.mark.model
 def test_model_strcuture_category_unique_constraints(db_inspector):
     constraints = db_inspector.get_unique_constraints(TABLE_NAME)
     # print("Test Constraints...", constraints)

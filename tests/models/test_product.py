@@ -71,10 +71,24 @@ def test_model_structure_product_default_values(db_inspector):
     assert columns["stock_status"]["default"] == "'oos'::status_enum"
 
 
-def test_model_structure_category_column_lengths(db_inspector):
+def test_model_structure_product_column_lengths(db_inspector):
     columns = {
         columns["name"]: columns for columns in db_inspector.get_columns(TABLE_NAME)
     }
     # print(columns)
     assert columns["name"]["type"].length == 200
     assert columns["slug"]["type"].length == 220
+
+
+def test_model_strcuture_product_unique_constraints(db_inspector):
+    constraints = db_inspector.get_unique_constraints(TABLE_NAME)
+    # print("Test Constraints...", constraints)
+
+    assert any(
+        constraint["name"] == "unq_product_name_constraint"
+        for constraint in constraints
+    )
+    assert any(
+        constraint["name"] == "unq_product_slug_constraint"
+        for constraint in constraints
+    )

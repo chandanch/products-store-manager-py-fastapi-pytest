@@ -12,6 +12,7 @@ from sqlalchemy import (
     Enum,
     ForeignKey,
 )
+from sqlalchemy.dialects.postgresql import UUID
 
 from app.settings.db_connection import Base
 
@@ -46,6 +47,12 @@ class Product(Base):
     __tablename__ = "product"
 
     id = Column(Integer, primary_key=True, nullable=False)
+    pid = Column(
+        UUID(as_uuid=True),
+        unique=True,
+        nullable=False,
+        server_default=text("uuid_generate_v4()"),
+    )
     name = Column(String(200), nullable=False)
     slug = Column(String(220), nullable=False)
     description = Column(Text, nullable=True)
@@ -71,4 +78,11 @@ class Product(Base):
         server_default="outofstock",
     )
     category_id = Column(Integer, ForeignKey("category.id"), nullable=False)
-    seasonal_event = Column(Integer, ForeignKey("seasonal_event.id"), nullable=False)
+    # seasonal_event = Column(Integer, ForeignKey("seasonal_event.id"), nullable=False)
+
+    __tableargs__ = (
+        CheckConstraint("LENGTH(name) > 0", name="product_name_length_constraint"),
+        CheckConstraint("LENGTH(slug) > 0", name="product_slug_length_constraint"),
+        UniqueConstraint("name", name="unq_product_name_constraint"),
+        UniqueConstraint("slug", name="unq_product_slug_constraint"),
+    )

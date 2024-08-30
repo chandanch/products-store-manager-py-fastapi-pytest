@@ -24,7 +24,7 @@ def test_model_structure_product_column_types(db_inspector):
     assert isinstance(columns["is_active"]["type"], Boolean)
     assert isinstance(columns["stock_status"]["type"], Enum)
     assert isinstance(columns["category_id"]["type"], Integer)
-    assert isinstance(columns["seasonal_event"]["type"], Integer)
+    # assert isinstance(columns["seasonal_event"]["type"], Integer)
 
 
 def test_model_structure_product_nullable_constraints(db_inspector):
@@ -42,7 +42,7 @@ def test_model_structure_product_nullable_constraints(db_inspector):
         "is_active": False,
         "stock_status": False,
         "category_id": False,
-        "seasonal_event": True,
+        # "seasonal_event": True,
     }
 
     for column in columns:
@@ -68,7 +68,7 @@ def test_model_structure_product_default_values(db_inspector):
     # print(columns)
     assert columns["is_digital"]["default"] == "false"
     assert columns["is_active"]["default"] == "false"
-    assert columns["stock_status"]["default"] == "'oos'::status_enum"
+    assert columns["stock_status"]["default"] == "'outofstock'::status_enum"
 
 
 def test_model_structure_product_column_lengths(db_inspector):
@@ -80,7 +80,7 @@ def test_model_structure_product_column_lengths(db_inspector):
     assert columns["slug"]["type"].length == 220
 
 
-def test_model_strcuture_product_unique_constraints(db_inspector):
+def test_model_structure_product_unique_constraints(db_inspector):
     constraints = db_inspector.get_unique_constraints(TABLE_NAME)
     # print("Test Constraints...", constraints)
 

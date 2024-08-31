@@ -64,7 +64,7 @@ def test_model_structure_product_line_default_values(db_inspector):
     assert columns["stock_status"]["default"] == "'outofstock'::status_enum"
 
 
-def test_model_structure_product_unique_constraints(db_inspector):
+def test_model_structure_product_line_unique_constraints(db_inspector):
     constraints = db_inspector.get_unique_constraints(TABLE_NAME)
     # print("Test Constraints...", constraints)
 
@@ -76,3 +76,12 @@ def test_model_structure_product_unique_constraints(db_inspector):
         constraint["name"] == "unq_product_line_order_product_id_constraint"
         for constraint in constraints
     )
+
+
+def test_model_structure_product_line_foreign_key(db_inspector):
+    foreign_keys = db_inspector.get_foreign_keys(TABLE_NAME)
+    product_id_fkey = next(
+        (fk for fk in foreign_keys if fk["constrained_columns"] == {"product_id"}), None
+    )
+
+    assert product_id_fkey is not None

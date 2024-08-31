@@ -80,7 +80,7 @@ class Product(Base):
         server_default="outofstock",
     )
     category_id = Column(Integer, ForeignKey("category.id"), nullable=False)
-    # seasonal_event = Column(Integer, ForeignKey("seasonal_event.id"), nullable=False)
+    seasonal_event = Column(Integer, ForeignKey("seasonal_event.id"), nullable=True)
 
     __tableargs__ = (
         CheckConstraint("LENGTH(name) > 0", name="product_name_length_constraint"),

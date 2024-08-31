@@ -11,6 +11,8 @@ from sqlalchemy import (
     func,
     Enum,
     ForeignKey,
+    DECIMAL,
+    Float,
 )
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -85,4 +87,38 @@ class Product(Base):
         CheckConstraint("LENGTH(slug) > 0", name="product_slug_length_constraint"),
         UniqueConstraint("name", name="unq_product_name_constraint"),
         UniqueConstraint("slug", name="unq_product_slug_constraint"),
+    )
+
+
+class ProductLine(Base):
+
+    __tablename__ = "product_line"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    price = Column(DECIMAL(precision=5, scale=2), nullable=False)
+    sku = Column(
+        UUID(as_uuid=True),
+        nullable=False,
+        server_default=text("uuid_generate_v4()"),
+    )
+    stock_qty = Column(Integer, nullable=False, default=0, server_default="0")
+    is_active = Column(Boolean, nullable=False, default=False, server_default="false")
+    order = Column(Integer, nullable=False)
+    weight = Column(Float, nullable=False)
+    created_at = Column(
+        DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP")
+    )
+    product_id = Column(Integer, ForeignKey("product.id"), nullable=False)
+
+    __tableargs__ = (
+        CheckConstraint(
+            "price >=0 AND price <=999.99", name="product_line_price_max_constraint"
+        ),
+        CheckConstraint(
+            '"order" >= 1 AND order <=20', name="product_line_order_range_constraint"
+        ),
+        UniqueConstraint(
+            '"order"', "product_id", name="unq_product_line_order_product_id_constraint"
+        ),
+        UniqueConstraint("sku", name="unq_product_line_sku_constraint"),
     )

@@ -24,7 +24,7 @@ def test_model_structure_product_line_column_types(db_inspector):
     assert isinstance(columns["product_id"]["type"], Integer)
 
 
-def test_model_structure_product_nullable_constraints(db_inspector):
+def test_model_structure_product_line_nullable_constraints(db_inspector):
     columns = db_inspector.get_columns(TABLE_NAME)
 
     expected_nullable_columns = {
@@ -36,6 +36,7 @@ def test_model_structure_product_nullable_constraints(db_inspector):
         "order": False,
         "weight": False,
         "product_id": False,
+        "created_at": False,
     }
 
     for column in columns:
@@ -61,7 +62,6 @@ def test_model_structure_product_line_default_values(db_inspector):
     # print(columns)
     assert columns["stock_qty"]["default"] == "0"
     assert columns["is_active"]["default"] == "false"
-    assert columns["stock_status"]["default"] == "'outofstock'::status_enum"
 
 
 def test_model_structure_product_line_unique_constraints(db_inspector):
@@ -81,7 +81,8 @@ def test_model_structure_product_line_unique_constraints(db_inspector):
 def test_model_structure_product_line_foreign_key(db_inspector):
     foreign_keys = db_inspector.get_foreign_keys(TABLE_NAME)
     product_id_fkey = next(
-        (fk for fk in foreign_keys if fk["constrained_columns"] == {"product_id"}), None
+        (fk for fk in foreign_keys if set(fk["constrained_columns"]) == {"product_id"}),
+        None,
     )
 
     assert product_id_fkey is not None

@@ -122,3 +122,29 @@ class ProductLine(Base):
         ),
         UniqueConstraint("sku", name="unq_product_line_sku_constraint"),
     )
+
+
+class ProductImage(Base):
+    __tablename__ = "product_image"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    alternative_text = Column(String(100), nullable=False)
+    url = Column(String(200), nullable=False)
+    order = Column(Integer, nullable=False)
+    product_line_id = Column(Integer, ForeignKey("product_line.id"), nullable=False)
+
+    __tableargs__ = (
+        CheckConstraint(
+            '"order" >= 1 AND order <=20', name="product_line_order_range_constraint"
+        ),
+        CheckConstraint("LENGTH(url) > 0", name="product_image_url_constraint"),
+        CheckConstraint(
+            "LENGTH(alternative_text) > 0",
+            name="product_image_alternative_text_constraint",
+        ),
+        UniqueConstraint(
+            '"order"',
+            "product_line_id",
+            name="unq_product_image_order_product_line_id_constraint",
+        ),
+    )

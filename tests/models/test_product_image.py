@@ -41,13 +41,20 @@ def test_model_structure_product_image_nullable_constraints(db_inspector):
 def test_model_structure_product_image_column_constraints(db_inspector):
     constraints = db_inspector.get_check_constraints(TABLE_NAME)
 
-    for constraint in constraints:
-        assert any(
-            constraint["alternative_text"]
-            == "product_image_alternative_text_constraint"
-        )
-        assert any(constraint["url"] == "product_image_url_constraint")
-        assert any(constraint["order"] == "product_line_order_range_constraint")
+    assert any(
+        constraint["name"] == "product_image_alternative_text_constraint"
+        for constraint in constraints
+    )
+
+    assert any(
+        constraint["name"] == "product_image_url_constraint"
+        for constraint in constraints
+    )
+
+    assert any(
+        constraint["name"] == "product_line_order_range_constraint"
+        for constraint in constraints
+    )
 
 
 def test_model_structure_product_image_unique_constraints(db_inspector):

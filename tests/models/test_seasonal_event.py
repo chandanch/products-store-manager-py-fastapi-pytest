@@ -39,8 +39,10 @@ def test_model_structure_seasonal_event_nullable_constraints(db_inspector):
 def test_model_structure_seasonal_event_column_constraints(db_inspector):
     constraints = db_inspector.get_check_constraints(TABLE_NAME)
 
-    for constraint in constraints:
-        assert any(constraint["name"] == "seasonal_event_name_length_constraint")
+    assert any(
+        constraint["name"] == "seasonal_event_name_length_constraint"
+        for constraint in constraints
+    )
 
 
 def test_model_structure_seasonal_event_unique_constraints(db_inspector):

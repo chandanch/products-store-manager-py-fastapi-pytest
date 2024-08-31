@@ -47,10 +47,15 @@ def test_model_structure_category_nullable_constraints(db_inspector):
 
 def test_model_structure_category_column_constraints(db_inspector):
     constraints = db_inspector.get_check_constraints(TABLE_NAME)
+    print(constraints)
 
-    for constraint in constraints:
-        assert any(constraint["name"] == "name_length_constraint")
-        assert any(constraint["name"] == "slug_length_constraint")
+    assert any(
+        constraint["name"] == "name_length_constraint" for constraint in constraints
+    )
+
+    assert any(
+        constraint["name"] == "slugh_length_constraint" for constraint in constraints
+    )
 
 
 def test_model_structure_category_default_values(db_inspector):

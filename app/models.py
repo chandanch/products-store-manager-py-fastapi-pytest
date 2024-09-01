@@ -36,7 +36,7 @@ class Category(Base):
     level = Column(Integer, nullable=False, default="100", server_default="100")
     parent_id = Column(Integer, ForeignKey("category.id"), nullable=True)
 
-    __tableargs__ = (
+    __table_args__ = (
         CheckConstraint("LENGTH(name) > 0", name="name_length_constraint"),
         CheckConstraint("LENGTH(slug) > 0", name="slugh_length_constraint"),
         UniqueConstraint("name", "level", name="unq_category_name_level_constraint"),
@@ -82,7 +82,7 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey("category.id"), nullable=False)
     seasonal_event = Column(Integer, ForeignKey("seasonal_event.id"), nullable=True)
 
-    __tableargs__ = (
+    __table_args__ = (
         CheckConstraint("LENGTH(name) > 0", name="product_name_length_constraint"),
         CheckConstraint("LENGTH(slug) > 0", name="product_slug_length_constraint"),
         UniqueConstraint("name", name="unq_product_name_constraint"),
@@ -103,22 +103,22 @@ class ProductLine(Base):
     )
     stock_qty = Column(Integer, nullable=False, default=0, server_default="0")
     is_active = Column(Boolean, nullable=False, default=False, server_default="false")
-    order = Column(Integer, nullable=False)
+    order = Column("order", Integer, nullable=False, quote=True)
     weight = Column(Float, nullable=False)
     created_at = Column(
         DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP")
     )
     product_id = Column(Integer, ForeignKey("product.id"), nullable=False)
 
-    __tableargs__ = (
+    __table_args__ = (
         CheckConstraint(
             "price >=0 AND price <=999.99", name="product_line_price_max_constraint"
         ),
         CheckConstraint(
-            '"order" >= 1 AND order <=20', name="product_line_order_range_constraint"
+            '"order" >= 1 AND "order" <=20', name="product_line_order_range_constraint"
         ),
         UniqueConstraint(
-            '"order"', "product_id", name="unq_product_line_order_product_id_constraint"
+            "order", "product_id", name="unq_product_line_order_product_id_constraint"
         ),
         UniqueConstraint("sku", name="unq_product_line_sku_constraint"),
     )
@@ -130,12 +130,12 @@ class ProductImage(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     alternative_text = Column(String(100), nullable=False)
     url = Column(String(200), nullable=False)
-    order = Column(Integer, nullable=False)
+    order = Column("order", Integer, nullable=False)
     product_line_id = Column(Integer, ForeignKey("product_line.id"), nullable=False)
 
-    __tableargs__ = (
+    __table_args__ = (
         CheckConstraint(
-            '"order" >= 1 AND order <=20', name="product_line_order_range_constraint"
+            '"order" >= 1 AND "order" <=20', name="product_line_order_range_constraint"
         ),
         CheckConstraint("LENGTH(url) > 0", name="product_image_url_constraint"),
         CheckConstraint(
@@ -143,7 +143,7 @@ class ProductImage(Base):
             name="product_image_alternative_text_constraint",
         ),
         UniqueConstraint(
-            '"order"',
+            "order",
             "product_line_id",
             name="unq_product_image_order_product_line_id_constraint",
         ),
@@ -158,7 +158,7 @@ class SeasonalEvent(Base):
     end_date = Column(DateTime, nullable=False)
     name = Column(String(100), nullable=False)
 
-    __tableargs__ = (
+    __table_args__ = (
         CheckConstraint(
             "LENGTH(name) > 0", name="seasonal_event_name_length_constraint"
         ),
@@ -166,4 +166,20 @@ class SeasonalEvent(Base):
             "name",
             name="unq_seasonal_event_name_constraint",
         ),
+    )
+
+
+class Attribute(Base):
+    __tablename__ = "attribute"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String(100), nullable=False)
+    description = Column(String(100), nullable=True)
+
+    __table_args__ = (
+        CheckConstraint(
+            "LENGTH(name) > 0",
+            name="attribute_name_length_check",
+        ),
+        UniqueConstraint("name", name="uq_attribute_name"),
     )

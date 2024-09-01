@@ -148,3 +148,22 @@ class ProductImage(Base):
             name="unq_product_image_order_product_line_id_constraint",
         ),
     )
+
+
+class SeasonalEvent(Base):
+    __tablename__ = "seasonal_event"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    start_date = Column(DateTime, nullable=False)
+    end_date = Column(DateTime, nullable=False)
+    name = Column(String(100), nullable=False)
+
+    __tableargs__ = (
+        CheckConstraint(
+            "LENGTH(name) > 0", name="seasonal_event_name_length_constraint"
+        ),
+        UniqueConstraint(
+            "name",
+            name="unq_seasonal_event_name_constraint",
+        ),
+    )

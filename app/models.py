@@ -200,3 +200,20 @@ class ProductType(Base):
         CheckConstraint("LENGTH(name) > 0", name="product_type_name_length_check"),
         UniqueConstraint("name", "level", name="uq_product_type_name_level"),
     )
+
+
+class AttributeValue(Base):
+    __tablename__ = "attribute_value"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    attribute_value = Column(String(100), nullable=False)
+    attribute_id = Column(Integer, ForeignKey("attribute.id"), nullable=False)
+
+    __table_args__ = (
+        CheckConstraint(
+            "LENGTH(attribute_value) > 0", name="attribute_value_name_length_check"
+        ),
+        UniqueConstraint(
+            "attribute_value", "attribute_id", name="uq_attribute_value_attribute_id"
+        ),
+    )

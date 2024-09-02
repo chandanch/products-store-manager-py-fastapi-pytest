@@ -76,3 +76,10 @@ For instance, we add a marker to all of the structural tests and run only the st
 
 **Run the tests with multiple markers marker**
 `pytest -m <marker1> and <marker2>`
+
+## Unit Testing
+
+Unit Testing verifies or checks the quality and reliablity of the code written
+A unit generally refers to smallest testable part of the codebase.
+This can be a function, method of a class or an entire class itself.
+Units are generally isolated components of code that does a specific taks

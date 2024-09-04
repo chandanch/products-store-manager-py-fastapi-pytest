@@ -13,6 +13,7 @@ alembic = "*"
 psycopg2-binary = "*"
 pytest-alembic = "*"
 docker = "*"
+faker = "*"
 
 [dev-packages]
 

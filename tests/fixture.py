@@ -2,9 +2,11 @@ import pytest
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from fastapi.testclient import TestClient
 
 from tests.utils.docker_utils import create_database_container
 from tests.utils.db_utils import upgrade_db
+from app.main import app
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -26,3 +28,9 @@ def create_database():
     # Delete container once the all the tests are complete
     container.stop()
     container.remove()
+
+
+@pytest.fixture(scope="function")
+def client():
+    with TestClient(app=app) as _client:
+        yield _client

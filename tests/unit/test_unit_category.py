@@ -36,7 +36,22 @@ def test_unit_create_category_success(client, monkeypatch):
     mock_category_data = generate_random_category_as_dict()
     clone_mock_category_data = mock_category_data.copy()
 
-    mock_category_data.pop("id")
+    clone_mock_category_data.pop("id")
+    response = client.post("api/category", clone_mock_category_data)
+    assert response.status_code == 201
+    assert response.json() == mock_category_data
+
+
+def test_unit_create_category_error(client, monkeypatch):
+
+    monkeypatch.setattr("sqlalchemy.orm.Query.first", mock_output)
+    monkeypatch.setattr("sqlalchemy.orm.Session.commit", mock_output)
+    monkeypatch.setattr("sqlalchemy.orm.Session.refresh", mock_output)
+
+    mock_category_data = generate_random_category_as_dict()
+    clone_mock_category_data = mock_category_data.copy()
+
+    clone_mock_category_data.pop("id")
     response = client.post("api/category", clone_mock_category_data)
     assert response.status_code == 201
     assert response.json() == mock_category_data

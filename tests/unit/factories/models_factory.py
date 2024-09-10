@@ -15,7 +15,7 @@ class Category:
         self.parent_id = parent_id
 
 
-def generate_random_category_as_dict(id: int):
+def generate_random_category_as_dict(id: int = 1):
     return {
         "id": id or faker.random_int(1, 1999),
         "name": faker.word(),

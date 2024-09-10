@@ -24,5 +24,5 @@ class CategoryDeleteReturn(BaseModel):
     name: Annotated[str, StringConstraints(min_length=1)]
 
 
-class CategoryReturn(CategoryBase):
+class CategoryResponse(CategoryBase):
     id: int

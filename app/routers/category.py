@@ -12,7 +12,6 @@ category_router = APIRouter()
 
 @category_router.post("/", response_model=CategoryResponse, status_code=201)
 def add_category(category_data: CategoryCreate, db: Session = Depends(get_db)):
-    print("Cat Data", category_data)
     new_category = Category(**category_data.model_dump())
 
     db.add(new_category)

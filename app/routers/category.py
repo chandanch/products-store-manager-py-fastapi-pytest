@@ -7,7 +7,6 @@ from app.settings.db_connection import get_db
 
 
 category_router = APIRouter()
-# db = SessionLocal()
 
 
 @category_router.post("/", response_model=CategoryResponse, status_code=201)

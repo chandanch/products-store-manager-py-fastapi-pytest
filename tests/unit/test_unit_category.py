@@ -7,6 +7,9 @@ from factories.models_factory import generate_random_category_as_dict
 
 
 def mock_output(return_value=None):
+    """
+    Returns a lamba function and echoes args and kwargs
+    """
     return lambda *args, **kwargs: return_value
 
 

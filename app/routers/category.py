@@ -6,11 +6,12 @@ from fastapi.exceptions import HTTPException
 from app.schemas.category_schema import CategoryResponse, CategoryCreate
 from app.settings.db_connection import get_db
 from app.utils.category_utils import check_existing_category
-
+from app.middlewares.auth_middleware import auth_requests
 
 category_router = APIRouter()
 
 
+@auth_requests
 @category_router.post("/", response_model=CategoryResponse, status_code=201)
 def add_category(category_data: CategoryCreate, db: Session = Depends(get_db)):
     try:

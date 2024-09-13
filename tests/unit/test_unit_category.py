@@ -102,3 +102,11 @@ def test_unit_create_new_category_with_internal_server_error(client, monkeypatch
     body.pop("id")
     response = client.post("/api/category/", json=body)
     assert response.status_code == 500
+
+
+def test_unit_get_all_categories_returns_empty(client, monkeypatch):
+    category = []
+    monkeypatch.setattr("sqlalchemy.orm.Query.all", mock_output(category))
+    response = client.get("api/category/")
+    assert response.status_code == 200
+    assert response.json() == category

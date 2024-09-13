@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from app.models import Category
 from sqlalchemy.orm import Session
 from fastapi.exceptions import HTTPException
@@ -11,9 +11,11 @@ from app.middlewares.auth_middleware import auth_requests
 category_router = APIRouter()
 
 
-@auth_requests
 @category_router.post("/", response_model=CategoryResponse, status_code=201)
-def add_category(category_data: CategoryCreate, db: Session = Depends(get_db)):
+@auth_requests
+def add_category(
+    request: Request, category_data: CategoryCreate, db: Session = Depends(get_db)
+):
     try:
         check_existing_category(db, category_data)
         new_category = Category(**category_data.model_dump())
@@ -24,6 +26,7 @@ def add_category(category_data: CategoryCreate, db: Session = Depends(get_db)):
         return new_category
     except HTTPException:
         raise
-    except Exception:
+    except Exception as e:
         db.rollback()
+        print("Error when creating category", e)
         raise HTTPException(status_code=500, detail="Internal server error")

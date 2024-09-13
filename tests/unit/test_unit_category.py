@@ -84,3 +84,21 @@ def test_unit_create_new_category_existing(
 
     if expected_detail:
         assert response.json() == {"detail": expected_detail}
+
+
+def test_unit_create_new_category_with_internal_server_error(client, monkeypatch):
+    category = generate_random_category_as_dict()
+
+    # Mock an exception to simulate an internal server error
+    def mock_create_category_exception(*args, **kwargs):
+        raise Exception("Internal server error")
+
+    for key, value in category.items():
+        monkeypatch.setattr(Category, key, value)
+    monkeypatch.setattr("sqlalchemy.orm.Query.first", mock_output())
+    monkeypatch.setattr("sqlalchemy.orm.Session.commit", mock_create_category_exception)
+
+    body = category.copy()
+    body.pop("id")
+    response = client.post("/api/category/", json=body)
+    assert response.status_code == 500

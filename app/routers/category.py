@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from app.models import Category
 from sqlalchemy.orm import Session
@@ -25,4 +26,14 @@ def add_category(category_data: CategoryCreate, db: Session = Depends(get_db)):
         raise
     except Exception:
         db.rollback()
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@category_router.get("/", response_model=List[CategoryResponse])
+def get_categories(db: Session = Depends(get_db)):
+    try:
+        categories = db.query(Category).all()
+        return categories
+    except Exception as e:
+        print("Error when fetching category", e)
         raise HTTPException(status_code=500, detail="Internal server error")

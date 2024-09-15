@@ -110,3 +110,13 @@ def test_unit_get_all_categories_returns_empty(client, monkeypatch):
     response = client.get("api/category/")
     assert response.status_code == 200
     assert response.json() == category
+
+
+@pytest.mark.parametrize(
+    "category", [generate_random_category_as_dict() for _ in range(3)]
+)
+def test_unit_get_single_category_successfully(client, monkeypatch, category):
+    monkeypatch.setattr("sqlalchemy.orm.Query.first", mock_output(category))
+    response = client.get(f"api/category/slug/{category['slug']}")
+    assert response.status_code == 200
+    assert response.json() == category

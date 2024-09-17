@@ -37,3 +37,25 @@ def get_categories(db: Session = Depends(get_db)):
     except Exception as e:
         print("Error when fetching category", e)
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+# Endpoint to update an existing category
+@category_router.put("/{category_id}", response_model=CategoryResponse, status_code=201)
+def update_category(
+    category_id: int,
+    category_data: CategoryCreate,
+    db: Session = Depends(get_db),
+):
+    try:
+        category = db.query(Category).filter(Category.id == category_id).first()
+        if not category:
+            raise HTTPException(status_code=404, detail="Category not found")
+        for key, value in category_data.model_dump().items():
+            setattr(category, key, value)
+        db.commit()
+        db.refresh(category)
+        return category
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=500, detail="Internal server error")

@@ -120,3 +120,24 @@ def test_unit_get_single_category_successfully(client, monkeypatch, category):
     response = client.get(f"api/category/slug/{category['slug']}")
     assert response.status_code == 200
     assert response.json() == category
+
+
+@pytest.mark.parametrize(
+    "category",
+    [
+        {
+            "id": 1,
+            "name": "named",
+            "slug": "anemdd",
+            "is_active": True,
+            "level": 1,
+            "parent_id": None,
+        }
+        for _ in range(3)
+    ],
+)
+def test_unit_get_single_category_failed(client, monkeypatch, category):
+    monkeypatch.setattr("sqlalchemy.orm.Query.first", mock_output(category))
+    response = client.get(f"api/category/slug/{category['slug']}")
+    assert response.status_code == 400
+    assert response.json() == category

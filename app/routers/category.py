@@ -59,3 +59,20 @@ def update_category(
         raise
     except Exception:
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+# Endpoint to delete a category
+@category_router.delete("/{category_id}", response_model=CategoryCreate)
+def delete_category(category_id: int, db: Session = Depends(get_db)):
+    try:
+        category = db.query(Category).filter(Category.id == category_id).first()
+        if not category:
+            raise HTTPException(status_code=404, detail="Category not found")
+        db.delete(category)
+        db.commit()
+        return category
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error while retrieving categories: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
